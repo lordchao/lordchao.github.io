@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://www.pngix.com/pngfile/middle/58-583666_superman-icon-png-logo-superman-transparent-png.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://www.pngix.com/pngfile/middle/58-583666_superman-icon-png-logo-superman-transparent-png.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Chapter-6-7These two chapter are mainly talk about Kernel method.Kernel-Method机器学习算法中，有一些算法比如线性回归和现行分类，训练数据在用来估计一个参数或者一个分布之后就会被丢弃，也有一些算法比如knn会保留一些训练数据来进行预测，通常着一些模型会定义两个输入数据之间的相似的度量（kernel）。As far as I">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PRML Chapter6-7 notes">
+<meta property="og:url" content="http://yoursite.com/2017/11/20/PRML-Chapter6-7-notes/index.html">
+<meta property="og:site_name" content="Chao&#39;s Blog">
+<meta property="og:description" content="Chapter-6-7These two chapter are mainly talk about Kernel method.Kernel-Method机器学习算法中，有一些算法比如线性回归和现行分类，训练数据在用来估计一个参数或者一个分布之后就会被丢弃，也有一些算法比如knn会保留一些训练数据来进行预测，通常着一些模型会定义两个输入数据之间的相似的度量（kernel）。As far as I">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://www.cs.cmu.edu/~yandongl/hinge.PNG">
+<meta property="og:updated_time" content="2019-10-10T03:21:33.105Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PRML Chapter6-7 notes">
+<meta name="twitter:description" content="Chapter-6-7These two chapter are mainly talk about Kernel method.Kernel-Method机器学习算法中，有一些算法比如线性回归和现行分类，训练数据在用来估计一个参数或者一个分布之后就会被丢弃，也有一些算法比如knn会保留一些训练数据来进行预测，通常着一些模型会定义两个输入数据之间的相似的度量（kernel）。As far as I">
+<meta name="twitter:image" content="http://www.cs.cmu.edu/~yandongl/hinge.PNG">
+  <link rel="canonical" href="http://yoursite.com/2017/11/20/PRML-Chapter6-7-notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>PRML Chapter6-7 notes | Chao's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chao's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/20/PRML-Chapter6-7-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lordchao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://cdn2.iconfinder.com/data/icons/many-people-flat-icons/128/superman-512.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chao's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">PRML Chapter6-7 notes
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2017-11-20 10:23:15" itemprop="dateCreated datePublished" datetime="2017-11-20T10:23:15+08:00">2017-11-20</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-10-10 11:21:33" itemprop="dateModified" datetime="2019-10-10T11:21:33+08:00">2019-10-10</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Technique/" itemprop="url" rel="index"><span itemprop="name">Technique</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/11/20/PRML-Chapter6-7-notes/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/11/20/PRML-Chapter6-7-notes/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Chapter-6-7"><a href="#Chapter-6-7" class="headerlink" title="Chapter-6-7"></a>Chapter-6-7</h1><p>These two chapter are mainly talk about Kernel method.</p><h2 id="Kernel-Method"><a href="#Kernel-Method" class="headerlink" title="Kernel-Method"></a>Kernel-Method</h2><p>机器学习算法中，有一些算法比如线性回归和现行分类，训练数据在用来估计一个参数或者一个分布之后就会被丢弃，也有一些算法比如knn会保留一些训练数据来进行预测，通常着一些模型会定义两个输入数据之间的相似的度量（kernel）。<br>As far as I’m concerned, the kernel method is to use a dual representation in which the prediction are also based on linear combinations of <em>kernel function</em><br>The general idea is that, if we have an algorithm formulated in such a way that the input vector $x$ enters only in the form of scalar products, then we can replace that scalar product with some other choice of kernel. So that is to say that the kernel can be used in many other algorithm such as linear regression, classification and PCA.</p><a id="more"></a>
+
+<h3 id="Gaussian-process"><a href="#Gaussian-process" class="headerlink" title="Gaussian-process"></a>Gaussian-process</h3><p>经过修改之后的线性回归可以看作是一种高斯过程的特例。<br>给定一个训练集 ${x_1,…,x_n}$，我们想要知道在特定的输入$x$下的预测值，如果我们保留训练数据并且关注 $y(x_1)$,…, $y(x_n)$ 的联合概率分布<br>$$\mathbf{y}=\mathbf{\Phi}\mathbf{w}$$<br>$\mathbf{y}$ 代表预测值的联合概率分布，从而这个联合概率分布也是一个高分布，我们可以相应的求出它的均值份和方差<br>$$E[\mathbf{y}]=\Phi E[w] = 0$$<br>$$cov[\mathbf{y}]=\frac{1}{\alpha}\Phi^\top\Phi=K$$<br>$$K_{nm}=k(x_n,x_m)=\frac{1}{\alpha}\phi(x_n)^\top\phi(x_m)$$<br>所以我们看到在 $p(\mathbf{y})$ 的分布中出现了kernel，也就是联合概率分布的协方差由kernel定义，接下来我们按照之前贝叶斯处理线性回归的方法，给 $p(\mathbf{y})$ 一个由kernl定义的先验分布，然后求条件分布 $p(\mathbf{t}|\mathbf{y})$ 和predictive distribution就可以了。</p>
+<h2 id="Sparse-Kernel-Machine"><a href="#Sparse-Kernel-Machine" class="headerlink" title="Sparse-Kernel-Machine"></a>Sparse-Kernel-Machine</h2><p>基于非线性核的方法有一个很大的缺点就是需要依赖所有可能的输入对，这就造成了在预测新的值时需要很大的计算量，所以有一些仅需要训练数据的一部分就可以作出预测。<br>这一章主要介绍了SVM和RVM两种，SVM是一种最优间隔分类器，目标就是希望找到两条距离最远的decision boundary，所以目标函数就是将间隔最大化。接下来就是运用拉格朗日乘数法解决这个带条件约束的最优化问题，表示成拉格朗日乘法之后就可以通过对偶表达的形式来运用kernel method。<br>基于统计的机器学习算法通常具有相同的形式，因为它们的基本思路都是提高模型的泛化能力，所以很多算法具有相同形式的损失函数。以SVM和Logistic Regression为例优化的目标函数都是一个损失函数跟上一个惩罚项，不同的是Logistic Regression是用的Logistic Error而SVM用的是hinge error. 在LR中我们将目标值改为（1，-1）并且写出似然函数后取对数构造损失函数进行变形可以使得误差函数经过（0，1）点。这两种误差函数都可以看作是分类误差的近似（这不是废话）， <img src="http://www.cs.cmu.edu/~yandongl/hinge.PNG" alt><br>图中蓝色的线代表hinge error，红色的线是logistic error，绿色的线是square error。</p>
+<h3 id="SVM-Regression"><a href="#SVM-Regression" class="headerlink" title="SVM-Regression"></a>SVM-Regression</h3><p>SVM的回归问题就是线性回归的损失函数替换为了一个不敏感的损失函数，具体来说就是对误差有一定的容忍范围，在这个范围内的误差不做计算，超过这个范围的使用一次的误差，然后同样对它进行代约束的最优化，通过对偶表示转化为kernel method。<br>在进行拉格朗日最优化的时候，KKT条件可以使得最终觉得分类线的仅是训练样本的一部分，也就是我们所说的支持向量。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2017/09/08/PRML-Chapter1-2-notes/" rel="next" title="PRML Chapter1-2 notes">
+                  <i class="fa fa-chevron-left"></i> PRML Chapter1-2 notes
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2018/07/16/PRML-Chapter8-9-notes/" rel="prev" title="PRML Chapter8-9 notes">
+                  PRML Chapter8-9 notes <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Chapter-6-7"><span class="nav-number">1.</span> <span class="nav-text">Chapter-6-7</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Kernel-Method"><span class="nav-number">1.1.</span> <span class="nav-text">Kernel-Method</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gaussian-process"><span class="nav-number">1.1.1.</span> <span class="nav-text">Gaussian-process</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sparse-Kernel-Machine"><span class="nav-number">1.2.</span> <span class="nav-text">Sparse-Kernel-Machine</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SVM-Regression"><span class="nav-number">1.2.1.</span> <span class="nav-text">SVM-Regression</span></a></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="https://cdn2.iconfinder.com/data/icons/many-people-flat-icons/128/superman-512.png"
+      alt="lordchao">
+  <p class="site-author-name" itemprop="name">lordchao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+        
+      </div>
+    
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lordchao</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.1</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://lordchao.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "http://yoursite.com/2017/11/20/PRML-Chapter6-7-notes/";
+    this.page.identifier = "2017/11/20/PRML-Chapter6-7-notes/";
+    this.page.title = 'PRML Chapter6-7 notes';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://lordchao.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://www.pngix.com/pngfile/middle/58-583666_superman-icon-png-logo-superman-transparent-png.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://www.pngix.com/pngfile/middle/58-583666_superman-icon-png-logo-superman-transparent-png.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="CS299 Lecture notes1 知识点整理$x^{(i)}$表示输入，也叫作输入特征，$y^{(i)}$叫做输出或目标。一对这样的值$(x^{(i)},y^{(i)})$称为训练样本。给定一个训练集，要学习一个函数（映射）$h:X\to Y$, 所以$h(x)$就是对应于$y$的一个预测函数。$h$也称作假设。">
+<meta name="keywords" content="machine learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cs229 note1">
+<meta property="og:url" content="http://yoursite.com/2017/03/31/CS229-note1/index.html">
+<meta property="og:site_name" content="Chao&#39;s Blog">
+<meta property="og:description" content="CS299 Lecture notes1 知识点整理$x^{(i)}$表示输入，也叫作输入特征，$y^{(i)}$叫做输出或目标。一对这样的值$(x^{(i)},y^{(i)})$称为训练样本。给定一个训练集，要学习一个函数（映射）$h:X\to Y$, 所以$h(x)$就是对应于$y$的一个预测函数。$h$也称作假设。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/2017/03/31/CS229-note1/cs229-note1/Screenshot.png">
+<meta property="og:updated_time" content="2019-10-09T08:08:27.514Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cs229 note1">
+<meta name="twitter:description" content="CS299 Lecture notes1 知识点整理$x^{(i)}$表示输入，也叫作输入特征，$y^{(i)}$叫做输出或目标。一对这样的值$(x^{(i)},y^{(i)})$称为训练样本。给定一个训练集，要学习一个函数（映射）$h:X\to Y$, 所以$h(x)$就是对应于$y$的一个预测函数。$h$也称作假设。">
+<meta name="twitter:image" content="http://yoursite.com/2017/03/31/CS229-note1/cs229-note1/Screenshot.png">
+  <link rel="canonical" href="http://yoursite.com/2017/03/31/CS229-note1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>cs229 note1 | Chao's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chao's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/31/CS229-note1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lordchao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://cdn2.iconfinder.com/data/icons/many-people-flat-icons/128/superman-512.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chao's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">cs229 note1
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2017-03-31 12:26:09" itemprop="dateCreated datePublished" datetime="2017-03-31T12:26:09+08:00">2017-03-31</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-10-09 16:08:27" itemprop="dateModified" datetime="2019-10-09T16:08:27+08:00">2019-10-09</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Technique/" itemprop="url" rel="index"><span itemprop="name">Technique</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/03/31/CS229-note1/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/03/31/CS229-note1/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="CS299-Lecture-notes1-知识点整理"><a href="#CS299-Lecture-notes1-知识点整理" class="headerlink" title="CS299 Lecture notes1 知识点整理"></a>CS299 Lecture notes1 知识点整理</h1><p>$x^{(i)}$表示输入，也叫作输入特征，$y^{(i)}$叫做输出或目标。一对这样的值$(x^{(i)},y^{(i)})$称为训练样本。<br>给定一个训练集，要学习一个函数（映射）$h:X\to Y$, 所以$h(x)$就是对应于$y$的一个预测函数。$h$也称作假设。<img src="cs229-note1/Screenshot.png" alt></p><a id="more"></a>
+<p>当我们预测的变量是连续的时候就称这个问题为回归问题，当$y$只能取很小的离散变量时，我们之为分类。</p>
+<h2 id="part-1-线性回归"><a href="#part-1-线性回归" class="headerlink" title="part 1 线性回归"></a>part 1 线性回归</h2><p>为了进行监督学习，我们必学决定如何表示假设$h$，最简单的，我们可以选择$y$是$x$的一个线性方程<br>$$h_{\theta}(x)=\theta_{0}+\theta_{1}x_{1}+\theta_{2}x_{2}$$<br>$\theta$称为参数或者权重，用求和符号来表示就是<br>$$h_{(x)}=\sum_{i=0}^{n}\theta_{i}x_{i}=\theta^{T}x$$<br>上式中的$x$和$\theta$都是向量，$n$为输入特征的个数。<br>现在给定一个训练集，我们怎样学习参数$\theta$呢?一种选择的方法就是让$h(x)$尽可能的与$y$相似。因此我们定义损失反函数，<br>$$J(\theta)=\frac{1}{2}\sum_{i=1}^{m}(h_{\theta}(x^{(i)}-y^{(i))})^2$$<br>来评估对于每一个参数$\theta$，$h(x^{(i)})$与$y^{(i)}$的接近程度。</p>
+<h3 id="1-Least-mean-algorithm"><a href="#1-Least-mean-algorithm" class="headerlink" title="1 Least mean algorithm"></a>1 Least mean algorithm</h3><p>为了得到$\theta$我们要最小化$J(\theta)$，因此我们用梯度下降来不断地改变$/theta$使$J(\theta)$得到最小。 更新法则为（:=表示覆盖）<br>$$\theta_{j}:= \theta_{j}-\alpha \frac{\partial }{\partial \theta }J(\theta)$$<br>其中$\alpha$为学习率，也就是梯度下降的步长。</p>
+<p>对每一个样本，更新法则右边进行求偏导可以得到没一个样本的更新法则：<br>$$\theta_{j}:= \theta_{j}-\alpha (y^{i}-h_{\theta}(x^{(i)})x_{j}^{(i)}$$<br>这个更新法则就是LMS更新法则。直观上来解释就是对于预测和真实相差大的参数进行改动。<br>推广到整个训练集，也就是梯度下降了，batch gradient descent，没进行一次更新都要遍历整个训练集，随机梯度下降只根据一个样本就会做出一次参数的更新。伪随机代码分别为<br>batch：<br>Repeat until convergence{<br>$$\theta_{j}:= \theta_{j}-\alpha\sum_{i=1}^{m} (y^{i}-h_{\theta}(x^{(i)})x_{j}^{(i)}$$ for every j<br>}<br>stochastic gradient descent<br>Loop{<br>    for i=1 to m,{<br>$$\theta_{j}:= \theta_{j}-\alpha (y^{i}-h_{\theta}(x^{(i)})x_{j}^{(i)}$$<br>    for every j  }<br>}</p>
+<h3 id="2-最小二乘法的闭式解"><a href="#2-最小二乘法的闭式解" class="headerlink" title="2 最小二乘法的闭式解"></a>2 最小二乘法的闭式解</h3><p>将每一个样本的特征$x^{(i)}$，放入一个设计矩阵X中，其中行数为样本数，列数为特征数。将所有的真实值放入向量$\vec y$中，也就是一个m行的列向量。这时损失函数$J(\theta)$可以表示为<br>$$J(\theta)=\frac{1}{2}(X\theta-\vec y)^T(X\theta-\vec y)$$<br>上式对\theta求偏导数可得：<br>$$\nabla_{\theta}J(\theta)=X^{T}X-X^{T}\vec y$$<br>令$J(\theta)=0$移项可得$$X^{T}X\theta=X^{T}\vec y$$<br>上式就是有名的normal equations了,所以也就有了损失最小时的闭式解<br>$$\theta=(X^{T}X)^{-1}X^{T}\vec y$$</p>
+<h3 id="3-least-squart作为损失函数的概率解释"><a href="#3-least-squart作为损失函数的概率解释" class="headerlink" title="3 least squart作为损失函数的概率解释"></a>3 least squart作为损失函数的概率解释</h3><p>选择least square作为我们损失函数的原因是因为，当我们假设预测值与真实值之间的误差$\epsilon$服从IID(indpendtly and identically distributed)时，<br>$$y^{(i)}=\theta^{T}x^{(i)}+\epsilon^{(i)}$$<br>最小二成回归等价于参数\theta的最大似然估计。<br>    因为误差服从高斯分布，所以表示条件概率在参数$\theta$下，$y|x$的条件概率时必定会带有$exp(-\frac{1}{2\sigma^2}(x-\mu)^2)$项，$(x-\mu))$也就是误差项，也就是$y^{(i)}-\theta^{T}x^{(i)}$。因此在进行极大似然估计的时候也就等同于将$e$的指数部分最大化，也就是误差部分最小化，从而等价于最小二乘的表达式。</p>
+<h2 id="part-2-分类和logistics-regression"><a href="#part-2-分类和logistics-regression" class="headerlink" title="part 2 分类和logistics regression"></a>part 2 分类和logistics regression</h2><p>分类问题可以看作是y为有限离散数值的回归问题。对于一个二分类问题，假设值取值大于1是没有意义的，所以我们要改变我们的假设$h_{\theta}(x)$ （线性方程不再适用）<br>$$h_{\theta}(x)=g(\theta^{T}x)=\frac{1}{1+e^{-\theta^{T}x}}$$<br>$$g(z)=\frac{1}{1+e^{-z}}$$<br>就称为logisitic funtion或者sigmoid funtion. sigmoid 函数可以看做是将无线的自变量映射到了（0,1）区间。<br>给定一个logsitic regression模型， 我们赋予他一些概率假设然后进行极大似然估计来求其参数$\theta$<br>我们可以假设在参数$\theta$下，给定一定的样本$x$, $y$(0或1)取值的概率为<br>$$p(y|x;\theta)=(h_{\theta}(x))^y(1-h_{\theta})^{1-y}$$<br>形式上与n次独立重复试验伯努利模型一致。再假设m个训练模型是独立产生的，我们可以利用概率的乘法法则得出似然函数<br>$$L(\theta)=p(\vec  y|X;\theta)$$<br>对上式两边取对数进行极大似然估计可以得到随机梯度上升法则<br>$$\theta_{j}:=\theta_{j}+\alpha(y^{(i)}-h_{\theta}(x^{(i)}))x_{j}^{(i)}$$<br>可以看出上式与LMS更新法则是一致的，但是却不有不是同一个算法，因为我们这里已经用sigmoid函数替代线性函数作为了假设预测$h_{\theta}(x^{(i)})$.至于为什么对于不同的学习问题和算法却会得出一致的更新法则呢？这是因为他们都属于广义线性模型。<br>part 3 广义线性模型<br>对于前面的回归问题我们假设样的条件概率$y|x;\theta$本服从高斯分布，对于二分类问题我们假设样本的条件概率$y|x;\theta$服从伯努利分布。其实他们都同属于指数族，同为指数族的函数还有multinomial(多维分布？)，泊松分布，gamma，beta和狄利克雷分布等。</p>
+<h3 id="logistics和softmax"><a href="#logistics和softmax" class="headerlink" title="logistics和softmax"></a>logistics和softmax</h3><p>logistic 对应是概率服从伯努利时的分类问题，softmax对应label取值为multinomial时的分类，他们同属于指数族。softmax的表达式为<br>$$\sigma(z)<em>{i}=\frac{e^{z</em>{i}}}{\sum_{j=1}^{k}e^{z_{k}}}$$<br>softmax回归的条件概率表达式为<br>$$p(y=i|x;\theta)=\sigma(z)<em>{i}$$<br>也就是给定输入x，在参数$\theta$下，y取值为i的概率。<br>#k-means（k-均值）算法<br>k-means是一种无监督的聚类算法。总体来说k-means算法分为两个步骤，第一个步骤是初始化k个均值（$\mu</em>{i}$），k也就是所要聚成类的个数。第二步就是将每个数据分配与之最近的类(与均值点距离最近)，然后根据重新分配的数据重新计算k个均值。</p>
+<h1 id="EM（期望最大）算法"><a href="#EM（期望最大）算法" class="headerlink" title="EM（期望最大）算法"></a>EM（期望最大）算法</h1><p>EM算法是一个迭代的用于估计根据隐藏变量来估计参数的算法。这个参数可以是最大后验概率或者是极大似然估计的参数。在进行极大似然估计的时候通常会有训练数据集和一个隐变量(latent variable)，这个隐变量回复从一个分布，比如可以是高斯分布，泊松分布等等。根据分布的不同，EM算法会有不同的表现形式。<br>EM算法简单来说就是根据凸函数的期望值会大于等于期望的函数值这个定理（Jensen’s inequality）来不断的给要估计的表达式来构建一个下界（E-step）并且来优化这个下届(M-step)。<br>$$E[f(X)]&gt;=f(E[X])$$<br>整个算法共分两步，期望（E-step）和最大化（M-step）。在期望步骤里，算法会根据对参数现有的估计来构建一个似然函数，然后在最大化阶段，再对似然函数进行最大化，求出一个新的参数估计，以此来作为下一次构建期望函数是的自变量。<br>期望最大算法与k-means聚类算法有相似之处，与k-means将每一个数据分配给类的硬性聚类({0,1,2,3…k})不同的是，EM将权重参数赋予了一个相对较软的值（[0,1]）</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/machine-learning/" rel="tag"># machine learning</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2017/03/27/资治通鉴战国篇随记/" rel="next" title="资治通鉴战国笔记">
+                  <i class="fa fa-chevron-left"></i> 资治通鉴战国笔记
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2017/04/15/Once-upon-in-winter/" rel="prev" title="Once upon_ in _winter">
+                  Once upon_ in _winter <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CS299-Lecture-notes1-知识点整理"><span class="nav-number">1.</span> <span class="nav-text">CS299 Lecture notes1 知识点整理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#part-1-线性回归"><span class="nav-number">1.1.</span> <span class="nav-text">part 1 线性回归</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Least-mean-algorithm"><span class="nav-number">1.1.1.</span> <span class="nav-text">1 Least mean algorithm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-最小二乘法的闭式解"><span class="nav-number">1.1.2.</span> <span class="nav-text">2 最小二乘法的闭式解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-least-squart作为损失函数的概率解释"><span class="nav-number">1.1.3.</span> <span class="nav-text">3 least squart作为损失函数的概率解释</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#part-2-分类和logistics-regression"><span class="nav-number">1.2.</span> <span class="nav-text">part 2 分类和logistics regression</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#logistics和softmax"><span class="nav-number">1.2.1.</span> <span class="nav-text">logistics和softmax</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#EM（期望最大）算法"><span class="nav-number">2.</span> <span class="nav-text">EM（期望最大）算法</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="https://cdn2.iconfinder.com/data/icons/many-people-flat-icons/128/superman-512.png"
+      alt="lordchao">
+  <p class="site-author-name" itemprop="name">lordchao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+        
+      </div>
+    
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lordchao</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.1</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://lordchao.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "http://yoursite.com/2017/03/31/CS229-note1/";
+    this.page.identifier = "2017/03/31/CS229-note1/";
+    this.page.title = 'cs229 note1';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://lordchao.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>
