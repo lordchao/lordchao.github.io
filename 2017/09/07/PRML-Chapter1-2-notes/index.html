@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://www.pngix.com/pngfile/middle/58-583666_superman-icon-png-logo-superman-transparent-png.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://www.pngix.com/pngfile/middle/58-583666_superman-icon-png-logo-superman-transparent-png.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Polynomial-curve-fittingThis is a regression example used throughout this  book. Suppose we have observed some real-valued input $x$, and we want to use these observation to predict a real-valued targ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PRML Chapter1-2 notes">
+<meta property="og:url" content="https://lordchao.me/2017/09/07/PRML-Chapter1-2-notes/index.html">
+<meta property="og:site_name" content="Chao&#39;s Blog">
+<meta property="og:description" content="Polynomial-curve-fittingThis is a regression example used throughout this  book. Suppose we have observed some real-valued input $x$, and we want to use these observation to predict a real-valued targ">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-10-10T03:20:54.373Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PRML Chapter1-2 notes">
+<meta name="twitter:description" content="Polynomial-curve-fittingThis is a regression example used throughout this  book. Suppose we have observed some real-valued input $x$, and we want to use these observation to predict a real-valued targ">
+  <link rel="canonical" href="https://lordchao.me/2017/09/07/PRML-Chapter1-2-notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>PRML Chapter1-2 notes | Chao's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Chao's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="https://lordchao.me/2017/09/07/PRML-Chapter1-2-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lordchao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://cdn2.iconfinder.com/data/icons/many-people-flat-icons/128/superman-512.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chao's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">PRML Chapter1-2 notes
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2017-09-07 23:45:57" itemprop="dateCreated datePublished" datetime="2017-09-07T23:45:57-07:00">2017-09-07</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-10-09 20:20:54" itemprop="dateModified" datetime="2019-10-09T20:20:54-07:00">2019-10-09</time>
+              </span>
+            
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/09/07/PRML-Chapter1-2-notes/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/09/07/PRML-Chapter1-2-notes/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Polynomial-curve-fitting"><a href="#Polynomial-curve-fitting" class="headerlink" title="Polynomial-curve-fitting"></a>Polynomial-curve-fitting</h1><p>This is a regression example used throughout this  book. Suppose we have observed some real-valued input $x$, and we want to use these observation to predict a real-valued target $t$. We then have the polynomial  function<br>$$y(x,w) = w_0+w_1x+w_2x^2+…+w_Mx^M = \sum^M_{j=0}w_jx_j$$<br>$M$ is the order of the polynomial function, $w$ is the coefficients or we can call weights.<br>In order to determine coefficients, we can define a error fucntion, typically we will use sum of squares of error between true target and predict value, which defined as follow:<br>$$E(w) = \frac{1}{2}{y(x_n,w)-t_n}^2$$</p><a id="more"></a>
+<h1 id="Probability-theory"><a href="#Probability-theory" class="headerlink" title="Probability-theory"></a>Probability-theory</h1><p>two important rule in the probability the one is sum rule, which is also called marginal probability, the other is the product rule, which is also called conditional probability rule is my college lessons.<br> $$p(x) = \int{p(x,y)}dy$$<br> $$p(x,y) = p(y|x)p(x)$$<br> then is the most important formula in this book - Baye’s theorem,<br> $$p(w|D) = \frac{p(D|w)p(w)}{p(D)}$$<br> This theorem give us a very important guide or framework which allow us to view the probability. A posterior proportional to the product of prior and likelihood. The prior is our guess about the uncertain value($w$) and the likelihood represent the evidence we get after we observed more and more data, we should noted that the likelihood itself is not a probability over $w$ and its integral with respect $w$ does not equal to one. In order to make our posterior to be a probability we need a normalization term, which is the sum of all the product of our prior and likelihood, it also called model evidence or marginal likelihood in the context of Bayesian model comparison(Charpter3.4).<br> $$p(D) = \int p(D|w)p(w)dw$$</p>
+<p>The probability play a center role in the whole machine learning area because it tells us what to do. In some way, is fairly simple as long as you know the conditional and marginal probability of some important distributions.</p>
+<p>Among all distributions, there are a special group distributions that have very nice properties that is the exponential family.Generally it takes form like:<br>$$p(x|\eta) = h(x)g(\eta)exp{\eta^Tu(x)}$$<br>where $\eta$ is called the natural parameters of the distribution and $g(\eta)$ is the normalization function. Almost very important distributions we used belongs to this family, such as Bernoulli distribution, multinomial distribution, Gaussian distribution, Beta, Dirichlet distribution and so on.</p>
+<p>One interesting thing is that when we view Bernoulli distribution as a exponential one, and we solve the natural parameter $\eta$ and then view this function as a function parameter by $\eta$ to slove a $u(\eta)$, we will get the <strong>logistic sigmoid</strong> function. Similarly, when we do the same thing about multinomial distribution, we will get <strong>softmax</strong> function.</p>
+<p>The most difference between the frequentist and Bayesian is that the parameter in Bayesian view is a uncertain value instead of a fixed value and what we want to do is try to infer it. Thus we for every predict task we need a prior distribution. The exponential family distribution have conjuate prior, in another words, if we choose a prior that is conjuate to the likelihood function, then the posterior will have the same form as prior.</p>
+<h2 id="important-probability-distributions"><a href="#important-probability-distributions" class="headerlink" title="important-probability-distributions"></a>important-probability-distributions</h2><p>For Bernoulli distribution we will choose beta distribution as our prior distribution, and for multinomial distribution we will choose Dirichlet distribution which can be seen as a generalization of beta distribution.<br>$$Beta(\mu) = \frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}\mu^{a-1}(1-\mu)^{b-1}$$<br>$$Dir(\mathbf{\mu}|\mathbf{\alpha}) = \frac{\Gamma(\sum_{k=1}^{K}\alpha_k)}{\Gamma(\alpha_0)…\Gamma(\alpha_K)}\prod_{k=1}^{K}\mu^{\alpha_k-1}_k$$<br>where $a$,$b$ is the hyperparameters that control the distribution of $\mu$. $\Gamma(x)$ is a generalization of factorial which takes form:<br>$$Gamma(x) = \int_0^{\infty}u^{x-1}e^{-u}du$$<br>The most important distribution is of course the Gaussian distribution or normal distribution, what we known before is the univariate form, but in machine learning we use the multinomial variate form for often.<br>$$\mathcal{N}(x|\mu,\sigma^2) = \frac{1}{(2\pi\sigma^2)^{1/2}}\exp{-\frac{1}{2\sigma^2}(x-\mu)^2}$$<br>For D-dimensional,<br>$$\mathcal{N}(\mathbf{x}|\mathbf{\mu},\mathbf{\Sigma}) = \frac{1}{2\pi^{D/2}}\frac{1}{|\Sigma|^{1/2}}\exp{-\frac{1}{2}(\mathbf{x}-\mathbf{\mu})^T\Sigma^{-1}(\mathbf{x}-\mathbf{\mu})}$$<br>The constant coefficient often doesn’t go into our discussion so we typically write it in a more simple form - the quadratic form<br>$$\Delta^2 = -\frac{1}{2}(\mathbf{x}-\mathbf{\mu})^T\Sigma^{-1}(\mathbf{x}-\mathbf{\mu})$$</p>
+<p>$p(t|x,\mathbf{x},\mathbf{t}) =  \int{p(t|x,\mathbf{w})p(\mathbf{w}|\mathbf{x})}$</p>
+<h2 id="Bayesian-inference-for-Gaussian"><a href="#Bayesian-inference-for-Gaussian" class="headerlink" title="Bayesian-inference-for-Gaussian"></a>Bayesian-inference-for-Gaussian</h2><p>The first step of Bayesian inference is to choose a prior, now we want to infer the mean $\mu$ of Gaussian discussion in which the variance $\sigma$ is known. Thus we can view the likelihood function given $N$ observation as a functio of $\mu$, it is actually the product of $n$ individual likelihood function($p(x_n|\mu)$).</p>
+<p>In this case, we’d like to choose the Gaussian discussion($\mathcal{N}(p(\mu|\mu_0,\sigma^2))$) to be the prior, and the posterior discussion therefore also will be Gaussian discussion. And usually the way we treat the product of prior and likelihood is completing the square so that let it become the quadratic form of Gaussian, then we will get the the mean and variance of the posterior discussion.<br>$$p(\mu|\mathbf{X}) = \mathcal{N}(\mu|\mu_N,\sigma^2)$$<br>where<br>$$\mu_N = \frac{\sigma^2}{N\sigma_0^2+\sigma^2}\mu_0+\frac{N\sigma_0^2}{N\sigma_0^2+\sigma^2}\mu_{ML}$$<br>$$\frac{1}{\sigma_N^2} = \frac{1}{\sigma_0^2}+\frac{N}{\sigma^2}$$<br>in which $\mu_ML$ is the maximum likelihood solution for $\mu$ given the sample mean<br>$$\mu_{ML} = \frac{1}{N}\sum_{n=1}^{N}x_n$$<br>From the result of the infer we can see that both the mean and variance are the sum of the prior and the result after observing $N$ data point, For $N$ is $0$ the mean reduce to the prior mean and the variance is the variance of the prior discussion. If $N\to\infty$, the effect of prior is more and more little, and the posterior infinitely peak around then maximum. If we consider the precision $\lambda = 1/\sigma^2$ instead of $\sigma$, we see that the precision is additive.</p>
+<p>If we known the mean and want to infer the variance, we can write the likelihood function $p(\mathbf{X}|\mu)$, is a function of $\lambda(1/\sigma^2)$, also the conjuate prior should be proportional to the product of a power of $\lambda$ and the exponential of a linear function of $\lambda$. Thus this corresponding to the <em>gamma discussion</em>.<br>$$Gam(\lambda|a,b) = \frac{1}{\Gamma(a)}b^a\lambda^{a-1}\exp(-b\lambda)$$<br>$$E[\lambda] = \frac{a}{b}$$<br>$$var[\lambda] = \frac{a}{b^2}$$<br>therefore,the posterior with a prior $Gam(\lambda|a_0,b_0)$ discussion is also a gamma discussion $Gam(\lambda|a_N,b_N)$<br>$$a_N = a_0 + \frac{N}{2}$$<br>$$b_N = b_0 + \frac{N}{2}\sigma^2_{ML}$$<br>In the case of multinomial Gaussian discussion $\mathcal{N}(\mathbf{x}|\mathbf{\mu},\mathbf{\Lambda}^{-1})$, for a  $\mathbf{D}$-D-dimensional variable, the conjuate prior for known mean and unknown precision matrix $\mathbf{\Lambda}$, the conjuate prior is the <em>Wishart discussion</em>, the expression of this discussion is very complex but it can be seen as a generalization of gamma discussion.<br>Finally, suppose both mean and variance are unknown.The conjuate prior is <em>normal-gamma</em> and <em>normal-Wishart</em> discussion.</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2017/09/07/PRML-Chapter3-4-notes/" rel="next" title="PRML Chapter3-4 notes">
+                  <i class="fa fa-chevron-left"></i> PRML Chapter3-4 notes
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2017/11/19/PRML-Chapter6-7-notes/" rel="prev" title="PRML Chapter6-7 notes">
+                  PRML Chapter6-7 notes <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Polynomial-curve-fitting"><span class="nav-number">1.</span> <span class="nav-text">Polynomial-curve-fitting</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Probability-theory"><span class="nav-number">2.</span> <span class="nav-text">Probability-theory</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#important-probability-distributions"><span class="nav-number">2.1.</span> <span class="nav-text">important-probability-distributions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bayesian-inference-for-Gaussian"><span class="nav-number">2.2.</span> <span class="nav-text">Bayesian-inference-for-Gaussian</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="https://cdn2.iconfinder.com/data/icons/many-people-flat-icons/128/superman-512.png"
+      alt="lordchao">
+  <p class="site-author-name" itemprop="name">lordchao</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+        
+      </div>
+    
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lordchao</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.1</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://lordchao.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://lordchao.me/2017/09/07/PRML-Chapter1-2-notes/";
+    this.page.identifier = "2017/09/07/PRML-Chapter1-2-notes/";
+    this.page.title = 'PRML Chapter1-2 notes';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://lordchao.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>

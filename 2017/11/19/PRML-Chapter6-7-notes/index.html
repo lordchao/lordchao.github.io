@@ -55,18 +55,20 @@
   };
 </script>
 
-  <meta name="description" content="首先先在vultr上买了一个日本的vps，然后利用这个vps搭建ss服务器。成功购买vps之后，会得到一个ipv4的公网地址，然后通过ssh连接到vps搭建shadowsocks.server端第一步安装shadowsocks:    yum install python-setuptools m2crypto    easy_install pip    pip install shadowso">
+  <meta name="description" content="Chapter-6-7These two chapter are mainly talk about Kernel method.Kernel-Method机器学习算法中，有一些算法比如线性回归和现行分类，训练数据在用来估计一个参数或者一个分布之后就会被丢弃，也有一些算法比如knn会保留一些训练数据来进行预测，通常着一些模型会定义两个输入数据之间的相似的度量（kernel）。As far as I">
 <meta property="og:type" content="article">
-<meta property="og:title" content="记一次完整的翻墙经历">
-<meta property="og:url" content="https://lordchao.me/2017/08/10/记一次完整的翻墙经历/index.html">
+<meta property="og:title" content="PRML Chapter6-7 notes">
+<meta property="og:url" content="https://lordchao.me/2017/11/19/PRML-Chapter6-7-notes/index.html">
 <meta property="og:site_name" content="Chao&#39;s Blog">
-<meta property="og:description" content="首先先在vultr上买了一个日本的vps，然后利用这个vps搭建ss服务器。成功购买vps之后，会得到一个ipv4的公网地址，然后通过ssh连接到vps搭建shadowsocks.server端第一步安装shadowsocks:    yum install python-setuptools m2crypto    easy_install pip    pip install shadowso">
+<meta property="og:description" content="Chapter-6-7These two chapter are mainly talk about Kernel method.Kernel-Method机器学习算法中，有一些算法比如线性回归和现行分类，训练数据在用来估计一个参数或者一个分布之后就会被丢弃，也有一些算法比如knn会保留一些训练数据来进行预测，通常着一些模型会定义两个输入数据之间的相似的度量（kernel）。As far as I">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-09T08:44:40.176Z">
+<meta property="og:image" content="http://www.cs.cmu.edu/~yandongl/hinge.PNG">
+<meta property="og:updated_time" content="2019-10-10T03:21:33.105Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="记一次完整的翻墙经历">
-<meta name="twitter:description" content="首先先在vultr上买了一个日本的vps，然后利用这个vps搭建ss服务器。成功购买vps之后，会得到一个ipv4的公网地址，然后通过ssh连接到vps搭建shadowsocks.server端第一步安装shadowsocks:    yum install python-setuptools m2crypto    easy_install pip    pip install shadowso">
-  <link rel="canonical" href="https://lordchao.me/2017/08/10/记一次完整的翻墙经历/">
+<meta name="twitter:title" content="PRML Chapter6-7 notes">
+<meta name="twitter:description" content="Chapter-6-7These two chapter are mainly talk about Kernel method.Kernel-Method机器学习算法中，有一些算法比如线性回归和现行分类，训练数据在用来估计一个参数或者一个分布之后就会被丢弃，也有一些算法比如knn会保留一些训练数据来进行预测，通常着一些模型会定义两个输入数据之间的相似的度量（kernel）。As far as I">
+<meta name="twitter:image" content="http://www.cs.cmu.edu/~yandongl/hinge.PNG">
+  <link rel="canonical" href="https://lordchao.me/2017/11/19/PRML-Chapter6-7-notes/">
 
 
 <script id="page-configurations">
@@ -80,7 +82,7 @@
   };
 </script>
 
-  <title>记一次完整的翻墙经历 | Chao's Blog</title>
+  <title>PRML Chapter6-7 notes | Chao's Blog</title>
   
 
 
@@ -205,7 +207,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="https://lordchao.me/2017/08/10/记一次完整的翻墙经历/">
+    <link itemprop="mainEntityOfPage" href="https://lordchao.me/2017/11/19/PRML-Chapter6-7-notes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="lordchao">
@@ -217,7 +219,7 @@
       <meta itemprop="name" content="Chao's Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">记一次完整的翻墙经历
+        <h1 class="post-title" itemprop="name headline">PRML Chapter6-7 notes
 
           
         </h1>
@@ -233,7 +235,7 @@
                 
               
 
-              <time title="Created: 2017-08-10 01:27:15" itemprop="dateCreated datePublished" datetime="2017-08-10T01:27:15-07:00">2017-08-10</time>
+              <time title="Created: 2017-11-19 18:23:15" itemprop="dateCreated datePublished" datetime="2017-11-19T18:23:15-08:00">2017-11-19</time>
             </span>
           
             
@@ -244,7 +246,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-10-09 01:44:40" itemprop="dateModified" datetime="2019-10-09T01:44:40-07:00">2019-10-09</time>
+                <time title="Modified: 2019-10-09 20:21:33" itemprop="dateModified" datetime="2019-10-09T20:21:33-07:00">2019-10-09</time>
               </span>
             
           
@@ -273,7 +275,7 @@
       
       <span class="post-meta-item-text">Disqus: </span>
     
-    <a title="disqus" href="/2017/08/10/记一次完整的翻墙经历/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/08/10/记一次完整的翻墙经历/" itemprop="commentCount"></span></a>
+    <a title="disqus" href="/2017/11/19/PRML-Chapter6-7-notes/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/11/19/PRML-Chapter6-7-notes/" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -287,22 +289,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>首先先在vultr上买了一个日本的vps，然后利用这个vps搭建ss服务器。<br>成功购买vps之后，会得到一个ipv4的公网地址，然后通过ssh连接到vps搭建shadowsocks.</p><h1 id="server端"><a href="#server端" class="headerlink" title="server端"></a>server端</h1><p>第一步安装shadowsocks:<br>    yum install python-setuptools m2crypto<br>    easy_install pip<br>    pip install shadowsocks<br>shadowsock是个sock5代理，所以需要server端和client端，首先创建在server端的json文件<br>    vi /etc/shadowsocks.json<br>内容为：</p><a id="more"></a>
+        <h1 id="Chapter-6-7"><a href="#Chapter-6-7" class="headerlink" title="Chapter-6-7"></a>Chapter-6-7</h1><p>These two chapter are mainly talk about Kernel method.</p><h2 id="Kernel-Method"><a href="#Kernel-Method" class="headerlink" title="Kernel-Method"></a>Kernel-Method</h2><p>机器学习算法中，有一些算法比如线性回归和现行分类，训练数据在用来估计一个参数或者一个分布之后就会被丢弃，也有一些算法比如knn会保留一些训练数据来进行预测，通常着一些模型会定义两个输入数据之间的相似的度量（kernel）。<br>As far as I’m concerned, the kernel method is to use a dual representation in which the prediction are also based on linear combinations of <em>kernel function</em><br>The general idea is that, if we have an algorithm formulated in such a way that the input vector $x$ enters only in the form of scalar products, then we can replace that scalar product with some other choice of kernel. So that is to say that the kernel can be used in many other algorithm such as linear regression, classification and PCA.</p><a id="more"></a>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  &#123;</span><br><span class="line">  &quot;server&quot;:&quot;0.0.0.0&quot;,     //这里不需要vps的ip地址</span><br><span class="line">  &quot;server_port&quot;:443,</span><br><span class="line">  &quot;local_port&quot;:1080,</span><br><span class="line">  &quot;password&quot;:&quot;你自己的ss密码（自己随便设吧）&quot;,</span><br><span class="line">  &quot;timeout&quot;:600,</span><br><span class="line">  &quot;method&quot;:&quot;aes-256-cfb&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这里需要注意！这里仅仅开启了一个端口(443端口)，也就意味着只能有一个client连接到server，如果手机连了，那电脑就连不上了,如果需要多个用户，就需要配置多个端口。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">  &#123;</span><br><span class="line">	&quot;server&quot;: &quot;0.0.0.0&quot;,</span><br><span class="line">	&quot;local_address&quot;: &quot;127.0.0.1&quot;,</span><br><span class="line">	&quot;local_port&quot;: 1080,</span><br><span class="line">	&quot;port_password&quot;: &#123;</span><br><span class="line">  &quot;8080&quot;: &quot;你的密码1&quot;,</span><br><span class="line">  &quot;8081&quot;: &quot;你的密码2&quot;</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;timeout&quot;: 600,</span><br><span class="line">	&quot;method&quot;: &quot;aes-256-cfb&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>接下来需要注意要在防火墙中开启并重置端口，也就是要这些端口对外开放，否则是连不上的。<br>    firewall-cmd –zone=public –add-port=8080/tcp –permanent<br>        firewall-cmd –zone=public –add-port=8081/tcp –permanent<br>        firewall-cmd –reload<br>打开fast-open<br>    vim /etc/rc.local<br>在文末添加<br>    echo 3 &gt; /proc/sys/net/ipv4/tcp_fastopen<br>退出编辑系统控制文件<br>    vim /etc/sysctl.conf<br>在最后添加<br>    net.ipv4.tcp_fastopen = 3<br>最后将json配置文件中的fast-open打开<br>    “fast_open”:true<br>这样shadowsocks的服务端就配置好了，但是连上的话速度会有些慢，看视频的话会很卡，因此这里我们需要安装锐速加速器<br>首先需要更改centos的内核<br>    rpm -ivh <a href="http://soft.91yun.org/ISO/Linux/CentOS/kernel/kernel-3.10.0-229.1.2.el7.x86_64.rpm" target="_blank" rel="noopener">http://soft.91yun.org/ISO/Linux/CentOS/kernel/kernel-3.10.0-229.1.2.el7.x86_64.rpm</a> –force<br>查看内核是否更换成功<br>    rpm -qa | grep kernel<br>重启<br>    sudo reboot<br>使用脚本安装锐速<br>    wget -N –no-check-certificate <a href="https://raw.githubusercontent.com/91yun/serverspeeder/master/serverspeeder-all.sh" target="_blank" rel="noopener">https://raw.githubusercontent.com/91yun/serverspeeder/master/serverspeeder-all.sh</a> &amp;&amp; bash serverspeeder-all.sh<br>配置文件<br>    vim /serverspeeder/etc/config<br>将advinacc的0改为1<br>开启ss服务端<br>    sudo ssserver -c /etc/shadowsocks.json -d start<br>开启加速<br>    /serverspeeder/bin/serverSpeeder.sh start</p>
-<h1 id="client端"><a href="#client端" class="headerlink" title="client端"></a>client端</h1><p>新建json客户端文件<br>    vim /etc/shadowsocks/config.json<br>填写内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;server&quot;:&quot;1.1.1.1&quot;, //此处是申请到的vps地址</span><br><span class="line">&quot;server_port&quot;:8388, /此处是开启的两个端口中的一个</span><br><span class="line">&quot;local_address&quot;: &quot;127.0.0.1&quot;,</span><br><span class="line">&quot;local_port&quot;:1080,</span><br><span class="line">&quot;password&quot;:&quot;your passwd&quot;,</span><br><span class="line">&quot;timeout&quot;:300,</span><br><span class="line">&quot;method&quot;:&quot;aes-256-cfb&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这样客户端文件就配置好了运行<br>    sslocal -t /etc/shadowsocks/config.json<br>就可以连到ssserver<br>但是每次输入命令会很麻烦因此需要安装supervisor<br>    sudo apt-get install supervisor<br>配置conf文件<br>    sudo vim /etc/supervisor/supervisord.conf<br>在文末加入下面文档</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[program:shadowsocks]</span><br><span class="line">command=sslocal -c /etc/shadowsocks/config.json</span><br><span class="line">autostart=true</span><br><span class="line">autorestart=true</span><br><span class="line">user=root</span><br><span class="line">log_stderr=true</span><br><span class="line">logfile=/var/log/shadowsocks.log</span><br></pre></td></tr></table></figure>
-
-<p>启动supervisor<br>    service supervisor restart<br>设置开机自启动<br>    sudo vim /etc/rc.local<br>加入<br>    service supervisor start</p>
-<h1 id="配置浏览器"><a href="#配置浏览器" class="headerlink" title="配置浏览器"></a>配置浏览器</h1><p>所有东西设置好之后还差最后一部就可以在电脑上上网了，使用chrome浏览器下载switchyomega代理软件，将代理设置为本机127.0.0.1端口设置为1080即可上网！</p>
+<h3 id="Gaussian-process"><a href="#Gaussian-process" class="headerlink" title="Gaussian-process"></a>Gaussian-process</h3><p>经过修改之后的线性回归可以看作是一种高斯过程的特例。<br>给定一个训练集 ${x_1,…,x_n}$，我们想要知道在特定的输入$x$下的预测值，如果我们保留训练数据并且关注 $y(x_1)$,…, $y(x_n)$ 的联合概率分布<br>$$\mathbf{y}=\mathbf{\Phi}\mathbf{w}$$<br>$\mathbf{y}$ 代表预测值的联合概率分布，从而这个联合概率分布也是一个高分布，我们可以相应的求出它的均值份和方差<br>$$E[\mathbf{y}]=\Phi E[w] = 0$$<br>$$cov[\mathbf{y}]=\frac{1}{\alpha}\Phi^\top\Phi=K$$<br>$$K_{nm}=k(x_n,x_m)=\frac{1}{\alpha}\phi(x_n)^\top\phi(x_m)$$<br>所以我们看到在 $p(\mathbf{y})$ 的分布中出现了kernel，也就是联合概率分布的协方差由kernel定义，接下来我们按照之前贝叶斯处理线性回归的方法，给 $p(\mathbf{y})$ 一个由kernl定义的先验分布，然后求条件分布 $p(\mathbf{t}|\mathbf{y})$ 和predictive distribution就可以了。</p>
+<h2 id="Sparse-Kernel-Machine"><a href="#Sparse-Kernel-Machine" class="headerlink" title="Sparse-Kernel-Machine"></a>Sparse-Kernel-Machine</h2><p>基于非线性核的方法有一个很大的缺点就是需要依赖所有可能的输入对，这就造成了在预测新的值时需要很大的计算量，所以有一些仅需要训练数据的一部分就可以作出预测。<br>这一章主要介绍了SVM和RVM两种，SVM是一种最优间隔分类器，目标就是希望找到两条距离最远的decision boundary，所以目标函数就是将间隔最大化。接下来就是运用拉格朗日乘数法解决这个带条件约束的最优化问题，表示成拉格朗日乘法之后就可以通过对偶表达的形式来运用kernel method。<br>基于统计的机器学习算法通常具有相同的形式，因为它们的基本思路都是提高模型的泛化能力，所以很多算法具有相同形式的损失函数。以SVM和Logistic Regression为例优化的目标函数都是一个损失函数跟上一个惩罚项，不同的是Logistic Regression是用的Logistic Error而SVM用的是hinge error. 在LR中我们将目标值改为（1，-1）并且写出似然函数后取对数构造损失函数进行变形可以使得误差函数经过（0，1）点。这两种误差函数都可以看作是分类误差的近似（这不是废话）， <img src="http://www.cs.cmu.edu/~yandongl/hinge.PNG" alt><br>图中蓝色的线代表hinge error，红色的线是logistic error，绿色的线是square error。</p>
+<h3 id="SVM-Regression"><a href="#SVM-Regression" class="headerlink" title="SVM-Regression"></a>SVM-Regression</h3><p>SVM的回归问题就是线性回归的损失函数替换为了一个不敏感的损失函数，具体来说就是对误差有一定的容忍范围，在这个范围内的误差不做计算，超过这个范围的使用一次的误差，然后同样对它进行代约束的最优化，通过对偶表示转化为kernel method。<br>在进行拉格朗日最优化的时候，KKT条件可以使得最终觉得分类线的仅是训练样本的一部分，也就是我们所说的支持向量。</p>
 
     </div>
 
@@ -319,8 +310,8 @@
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/2017/04/15/Once-upon-in-winter/" rel="next" title="Once upon a time in winter">
-                  <i class="fa fa-chevron-left"></i> Once upon a time in winter
+                <a href="/2017/09/07/PRML-Chapter1-2-notes/" rel="next" title="PRML Chapter1-2 notes">
+                  <i class="fa fa-chevron-left"></i> PRML Chapter1-2 notes
                 </a>
               
             </div>
@@ -329,8 +320,8 @@
 
             <div class="post-nav-prev post-nav-item">
               
-                <a href="/2017/09/07/PRML-Chapter3-4-notes/" rel="prev" title="PRML Chapter3-4 notes">
-                  PRML Chapter3-4 notes <i class="fa fa-chevron-right"></i>
+                <a href="/2018/07/15/PRML-Chapter8-9-notes/" rel="prev" title="PRML Chapter8-9 notes">
+                  PRML Chapter8-9 notes <i class="fa fa-chevron-right"></i>
                 </a>
               
             </div>
@@ -386,7 +377,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#server端"><span class="nav-number">1.</span> <span class="nav-text">server端</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#client端"><span class="nav-number">2.</span> <span class="nav-text">client端</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置浏览器"><span class="nav-number">3.</span> <span class="nav-text">配置浏览器</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Chapter-6-7"><span class="nav-number">1.</span> <span class="nav-text">Chapter-6-7</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Kernel-Method"><span class="nav-number">1.1.</span> <span class="nav-text">Kernel-Method</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Gaussian-process"><span class="nav-number">1.1.1.</span> <span class="nav-text">Gaussian-process</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sparse-Kernel-Machine"><span class="nav-number">1.2.</span> <span class="nav-text">Sparse-Kernel-Machine</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SVM-Regression"><span class="nav-number">1.2.1.</span> <span class="nav-text">SVM-Regression</span></a></li></ol></li></ol></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -512,6 +503,58 @@
   
 
   
+    
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+  
 
   
 
@@ -529,9 +572,9 @@
 </script>
 <script>
   function disqus_config() {
-    this.page.url = "https://lordchao.me/2017/08/10/记一次完整的翻墙经历/";
-    this.page.identifier = "2017/08/10/记一次完整的翻墙经历/";
-    this.page.title = '记一次完整的翻墙经历';};
+    this.page.url = "https://lordchao.me/2017/11/19/PRML-Chapter6-7-notes/";
+    this.page.identifier = "2017/11/19/PRML-Chapter6-7-notes/";
+    this.page.title = 'PRML Chapter6-7 notes';};
   function loadComments() {
     if (window.DISQUS) {
       DISQUS.reset({
